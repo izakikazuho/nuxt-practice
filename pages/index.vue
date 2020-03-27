@@ -28,6 +28,7 @@ export default {
     }
   },
   fetch() {
+    // SSR / Only in Nuxt.js レンダリング前に外部のデータをStoreにセット
     if (process.server) {
       console.log(`SSR in fetch | `, this.hoge, this.computedHoge)
     } else {
@@ -35,6 +36,7 @@ export default {
     }
   },
   asyncData() {
+    // SSR / Only in Nuxt.js
     if (process.server) {
       console.log(`SSR in asyncData | this.hoge error`) // hogeはundefinedエラー
     } else {
@@ -42,6 +44,8 @@ export default {
     }
   },
   validate({ params, query, store }) {
+    // SSR & CSR / Only in Nuxt.js 動的ルーティング
+    // URLのパラメータを検証するし、falseを返せば404にroutingする
     if (process.server) {
       console.log(`SSR in validate | `, this.hoge, this.computedHoge)
     } else {
@@ -55,6 +59,7 @@ export default {
     }
   },
   beforeCreate() {
+    // SSR & CSR
     if (process.server) {
       console.log(`SSR in beforeCreate | `, this.hoge, this.computedHoge)
     } else {
@@ -62,13 +67,16 @@ export default {
     }
   },
   created() {
+    // SSR & CSR
     if (process.server) {
       console.log(`SSR in created | `, this.hoge, this.computedHoge)
     } else {
       console.log(`CSR in created | `, this.hoge, this.computedHoge)
     }
   },
+  // ココカラ先はクライアントサイドでしか走らない絶対に。
   beforeMount() {
+    // CSR
     // if (process.server) {
     //   console.log(`SSR in beforeMount | `, this.hoge, this.computedHoge)
     // } else {
@@ -76,6 +84,8 @@ export default {
     // }
   },
   mounted() {
+    // CSR
+    // DOMツリーが構築された時
     // if (process.server) {
     //   console.log(`SSR in mounted | `, this.hoge, this.computedHoge)
     //   console.log(this.computedHoge())
@@ -84,14 +94,17 @@ export default {
     // }
   },
   beforeUpdate() {
-    // // if (process.server) {
-    // //   console.log(`SSR in beforeUpdate | `, this.hoge, this.computedHoge)
-    // //   console.log(this.computedHoge())
+    // CSR
+    // if (process.server) {
+    //   console.log(`SSR in beforeUpdate | `, this.hoge, this.computedHoge)
+    //   console.log(this.computedHoge())
     // } else {
     console.log(`CSR in beforeUpdate | `, this.hoge, this.computedHoge)
     // }
   },
   updated() {
+    // CSR
+    // リアクティブな値が更新された時
     // if (process.server) {
     //   console.log(`SSR in updated | `, this.hoge, this.computedHoge)
     //   console.log(this.computedHoge())
@@ -100,6 +113,7 @@ export default {
     // }
   },
   beforeDestroy() {
+    // CSR
     // if (process.server) {
     //   console.log(`SSR in beforeDestroy | `, this.hoge, this.computedHoge)
     //   console.log(this.computedHoge())
@@ -108,6 +122,8 @@ export default {
     // }
   },
   destroyed() {
+    // CSR
+    // Vueインスタンスを破棄
     // if (process.server) {
     //   console.log(`SSR in destroyed | `, this.hoge, this.computedHoge)
     //   console.log(this.computedHoge())
