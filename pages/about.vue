@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <logo color="green" />
+      <logo color="sakura" />
       <h1 class="title">
         {{ hoge }}
       </h1>
@@ -9,7 +9,7 @@
         My awesome Nuxt.js project
       </h2>
       <div class="links">
-        <nuxt-link to="./about">to About</nuxt-link>
+        <nuxt-link to="./">to Index</nuxt-link>
       </div>
       <input type="text" v-model="hoge" />
     </div>
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      hoge: 'here is a index page'
+      hoge: 'here is an about page'
     }
   },
   fetch() {
