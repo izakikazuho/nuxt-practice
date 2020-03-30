@@ -22,6 +22,7 @@ export default {
   components: {
     Logo
   },
+  middleware: 'middlewareexample',
   data() {
     return {
       hoge: 'here is a index page'
