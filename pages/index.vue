@@ -12,17 +12,24 @@
         <nuxt-link to="./about">to About</nuxt-link>
       </div>
       <input type="text" v-model="hoge" />
+      <div>
+        <div v-for="post in posts" :key="post.id">
+          <h3 v-html="post.excerpt.rendered" />
+          <p v-html="post.title.rendered" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
   },
-  middleware: 'middlewareexample',
+  middleware: 'getJobs',
   data() {
     return {
       hoge: 'here is a index page'
@@ -57,7 +64,8 @@ export default {
   computed: {
     computedHoge() {
       return `computed_${this.hoge}`
-    }
+    },
+    ...mapState(['posts'])
   },
   beforeCreate() {
     // SSR & CSR
@@ -92,6 +100,7 @@ export default {
     //   console.log(this.computedHoge())
     // } else {
     console.log(`CSR in mounted | `, this.hoge, this.computedHoge)
+    console.log(this.$route)
     // }
   },
   beforeUpdate() {

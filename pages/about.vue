@@ -81,6 +81,7 @@ export default {
     //   console.log(this.computedHoge())
     // } else {
     console.log(`CSR in mounted | `, this.hoge, this.computedHoge)
+    console.log(this.$route)
     // }
   },
   beforeUpdate() {
