@@ -109,3 +109,29 @@ Vue インスタンスが生成される時。つまり、created が実行さ�
 - 意図した動きにならない時は、書いた関数が適切なタイミングで呼ばれているか、意図せぬ重複実行がされていないかを、ログを出して確認する。
 - window や document など、プラットフォームに依存した API にアクセスすると、Node.js でエラーとなるため、実行タイミングを意識する。
   - https://ssr.vuejs.org/ja/guide/universal.html#%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%81%AE%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB%E3%83%95%E3%83%83%E3%82%AF
+
+## Vue Router
+
+### Guard ってなんなん
+
+Navigation Guard - Vue Router の機能。ページ遷移の前後にフックされ、任意の処理を実行することができる。
+素の Vue では、画面遷移のアニメーション演出をするために使ったり、認証の状態次第でページをリダイレクトさせるのに使える、ぽい。
+Nuxt の場合は middleware に代替される、ぽい。
+
+少し理解が薄い。。
+https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middlewares-43ae9dc131b4
+
+## middleware
+
+- 指定のページが描画される前に描画される前に任意の処理を実行することができる。
+- 全ページのレンダリング前に噛ませたい時は、nuxt.config.js に書く。
+  - サイト全体で使用するデータを Vuex ストアに格納したい時など
+- 特定のページでのみ実行する場合は、ページの vm に middleware プロパティを持たせる。
+
+## serverMiddleware
+
+- ルーティングの middleware とは別物だよ。
+  - https://ja.nuxtjs.org/api/configuration-servermiddleware/
+    - > クライアントサイドや SSR の Vue で各ルートの前に呼び出されている ルーティングのミドルウェア と混同しないでください。 serverMiddleware は vue-server-renderer の 前に サーバー側で実行され、API リクエストの処理やアセットの処理などのサーバー固有のタスクとして使用できます。
+  - つまりは、SSR が走るよりも手前に Node.js のなんらかの処理を割り込ませることができる。素敵だ。
+  - /api にアクセスした時に処理を割り込ませたい場合は、nuxt.config.js に次のように追加 `serverMiddleware: [{ path: '/api', handler: '~/api/marvelousapi.js' }]`

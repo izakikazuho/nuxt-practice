@@ -1,7 +1,9 @@
+const serveStatic = require('serve-static')
+
 module.exports = {
   mode: 'universal',
   /*
-   ** Headers of the page
+   ** Headers of the pagef
    */
   head: {
     title: process.env.npm_package_name || '',
@@ -61,5 +63,6 @@ module.exports = {
   },
   router: {
     middleware: ['getJobs']
-  }
+  },
+  serverMiddleware: [{ path: '/api', handler: '~/api/marvelousapi.js' }]
 }

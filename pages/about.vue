@@ -18,7 +18,9 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
+import { routeGuardsLogs } from '~/mixin/mixin.js'
 export default {
+  mixins: [routeGuardsLogs],
   components: {
     Logo
   },
@@ -53,6 +55,18 @@ export default {
     computedHoge() {
       return `computed_${this.hoge}`
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    console.log(`beforeRouteEnter | to: ${to.name} | from: ${from.name}`)
+    next()
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(`beforeRouteLeave | to: ${to.name} | ${from.name}`)
+    next()
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(`beforeRouteUpdate | to: ${to.name} | ${from.name}`)
+    next()
   },
   beforeCreate() {
     if (process.server) {
