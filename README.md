@@ -123,6 +123,7 @@ https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middleware
 
 ## middleware
 
+- Nuxt の機能。Vue Router が提供するナビゲーションガードを良きやうに扱ってくれている？
 - 指定のページが描画される前に描画される前に任意の処理を実行することができる。
 - 全ページのレンダリング前に噛ませたい時は、nuxt.config.js に書く。
   - サイト全体で使用するデータを Vuex ストアに格納したい時など
