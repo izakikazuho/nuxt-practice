@@ -115,15 +115,63 @@ Vue インスタンスが生成される時。つまり、created が実行さ�
 ### Guard ってなんなん
 
 Navigation Guard - Vue Router の機能。ページ遷移の前後にフックされ、任意の処理を実行することができる。
-素の Vue では、画面遷移のアニメーション演出をするために使ったり、認証の状態次第でページをリダイレクトさせるのに使える、ぽい。
-Nuxt の場合は middleware に代替される、ぽい。
+以下の三つに分類される。
+
+- グローバルビフォーガード
+
+  - その名の通り。アプリ全体に作用する。遷移ごとに vuex のステートを変更する時など。
+  - 関数
+    - beforeEach
+      - 引数に to, from, next をとる。
+        - to は遷移先の、from は現在のルートオブジェクト。
+        - next は、フックを解決するために実行すべき関数。これを実行しないと夜明けはこない。
+    - afterEach
+      - 引数に to, from をとる。
+      - 遷移完了を通知してくれる便利なだけのフック。
+
+- ルート単位ガード
+
+  - その名の通り。ルート単位で登録できる。
+  - router.js のルートオブジェクトそれぞれに書いていく。
+  - 関数
+    - beforeEach
+      - グローバルビフォーガードと同じ
+  - ```async beforeEnter(to, from, next) {
+        await new Promise(resolve => {
+          setTimeout(() => {
+            resolve("success");
+          }, 3000);
+          console.log(to.name);
+        });
+        next();
+      }
+    ```
+  - nuxt では fetch を使うと良い。
+
+- コンポーネント内ガード
+  - その名の通り。コンポーネントごとに登録できる。
+  - 関数
+    - beforeRouteEnter
+      - 引数に to, from, next をとる。
+        - to は遷移先の、from は現在のルートオブジェクト。
+        - next は、フックを解決するために実行すべき関数。これを実行しないと夜明けはこない。
+        - this ではコンポーネントにアクセスできない(なぜなら実行時点でまだインスタンスが完成していないから)
+          - next にコールバックを渡すとアクセス可能
+          - ドキュメント読んだらわかる
+    - beforeRouteUpdate
+      - 引数に to, from, next をとる。
+      - > たとえば、動的な引数 `/foo/:id` を持つルートの場合、`/foo/1` と `/foo/2` の間を移動すると、同じ `Foo` コンポーネントインスタンスが再利用され、そのときにこのフックが呼び出されます。
+    - beforeRouteLeave
+      - 引数に to, from, next をとる。
+      - 例えば、フォームの編集中に経路を離脱しようとする際に警告を出したりする時に使える。
 
 少し理解が薄い。。
 https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middlewares-43ae9dc131b4
 
 ## middleware
 
-- Nuxt の機能。Vue Router が提供するナビゲーションガードを良きやうに扱ってくれている？
+- Nuxt の機能。~Vue Router が提供するナビゲーションガードを良きやうに扱ってくれている？~
+  - Nuxt のライフサイクルの中で実行されるもの。
 - 指定のページが描画される前に描画される前に任意の処理を実行することができる。
 - 全ページのレンダリング前に噛ませたい時は、nuxt.config.js に書く。
   - サイト全体で使用するデータを Vuex ストアに格納したい時など
@@ -132,7 +180,18 @@ https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middleware
 ## serverMiddleware
 
 - ルーティングの middleware とは別物だよ。
+
   - https://ja.nuxtjs.org/api/configuration-servermiddleware/
     - > クライアントサイドや SSR の Vue で各ルートの前に呼び出されている ルーティングのミドルウェア と混同しないでください。 serverMiddleware は vue-server-renderer の 前に サーバー側で実行され、API リクエストの処理やアセットの処理などのサーバー固有のタスクとして使用できます。
-  - つまりは、SSR が走るよりも手前に Node.js のなんらかの処理を割り込ませることができる。素敵だ。
+  - *実行*される、というのは serverMiddleware の仕組みが準備されることを指していて、設定したタスクが実行されるのは、何かしらのリクエストを受けた時。
+    - log 出したら実行されるタイミングがよくわかるね。
   - /api にアクセスした時に処理を割り込ませたい場合は、nuxt.config.js に次のように追加 `serverMiddleware: [{ path: '/api', handler: '~/api/marvelousapi.js' }]`
+
+-
+
+## asyncData と fetch の違い
+
+基本的にはほぼ同じ機構。違いは以下。
+
+- asyncData は返り値を Vue インスタンスの Data に定義してくれる。fetch はそれをしない。
+- そのため、フェッチしたデータをそのコンポーネント内で'のみ'使用する場合は asyncData。アプリ全体で使用する場合は fetch で取得し、Vuex ストアに突っ込むという使い分けをする。

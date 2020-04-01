@@ -41,6 +41,7 @@
 }
 </style>
 <script>
+import { routeGuardsLogs } from '~/mixin/mixin.js'
 export default {
   props: {
     color: {
@@ -48,6 +49,7 @@ export default {
       default: 'green'
     }
   },
+  mixins: [routeGuardsLogs],
   data: () => {
     return {
       colorSet: {

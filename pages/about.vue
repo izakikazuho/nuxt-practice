@@ -18,9 +18,7 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
-import { routeGuardsLogs } from '~/mixin/mixin.js'
 export default {
-  mixins: [routeGuardsLogs],
   components: {
     Logo
   },

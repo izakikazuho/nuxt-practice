@@ -24,13 +24,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import { routeGuardsLogs } from '~/mixin/mixin.js'
 import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
   },
-  mixins: [routeGuardsLogs],
   middleware: 'getJobs',
   data() {
     return {

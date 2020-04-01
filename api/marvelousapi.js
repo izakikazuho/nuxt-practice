@@ -4,6 +4,7 @@ export default function(req, res, next) {
   res.write('Hello, you are marvelous guy.\n')
   res.end()
 
+  console.log('実行されたやで')
   // res は Node.js の HTTPレスポンスオブジェクトです
 
   // next は 次のミドルウェアを呼び出すための関数です。
