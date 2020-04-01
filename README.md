@@ -166,8 +166,8 @@ Navigation Guard - Vue Router の機能。ページ遷移の前後にフック�
     - 引数に to, from, next をとる。
     - 例えば、フォームの編集中に経路を離脱しようとする際に警告を出したりする時に使える。
 
-少し理解が薄い。。
-https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middlewares-43ae9dc131b4
+- 参考
+  - https://medium.com/@seif.sayed/global-navigation-guards-in-nuxt-using-middlewares-43ae9dc131b4
 
 ## middleware
 
